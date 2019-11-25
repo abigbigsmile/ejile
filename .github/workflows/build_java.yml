@@ -3,53 +3,49 @@ name: Java CI
 on: [push]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
   java-job:
-    build:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v1
-        - name: Set up JDK 1.8
-          uses: actions/setup-java@v1
-          with:
-            java-version: 1.8
-        - name: Build with Maven
-          run: mvn clean install -Dmaven.test.skip=true
-          working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Build with Maven
+        run: mvn clean install -Dmaven.test.skip=true
+        working-directory: ./backend
   admin-job:
-    build:
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          node-version: [10.x]
-      steps:
-        - uses: actions/checkout@v1
-        - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v1
-          with:
-            node-version: ${{ matrix.node-version }}
-        - name: npm install, build
-          run: |
-            npm ci
-            npm run build --if-present
-          working-directory: ./admin
-          env:
-            CI: true
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install, build
+        run: |
+          npm ci
+          npm run build --if-present
+        working-directory: ./admin
+        env:
+          CI: true
   frontend-job:
-    build:
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          node-version: [10.x]
-      steps:
-        - uses: actions/checkout@v1
-        - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v1
-          with:
-            node-version: ${{ matrix.node-version }}
-        - name: npm install, build
-          run: |
-            npm ci
-            npm run build --if-present
-          working-directory: ./frontend
-          env:
-            CI: true
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install, build
+        run: |
+          npm ci
+          npm run build --if-present
+        working-directory: ./frontend
+        env:
+          CI: true
