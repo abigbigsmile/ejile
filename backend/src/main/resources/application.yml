@@ -14,9 +14,13 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  redis:
+    host: 120.27.243.204
+    port: 6379
+    password: yang123(*&
 
-#logging:
-#  level:
-#    com:
-#      springboot:
-#        mapper: debug
+logging:
+  level:
+    com:
+      qtztlink:
+        ejile: debug
