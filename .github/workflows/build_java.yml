@@ -3,9 +3,8 @@ name: Java CI
 on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
   java-job:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 1.8
@@ -16,6 +15,7 @@ jobs:
         run: mvn clean install -Dmaven.test.skip=true
         working-directory: ./backend
   admin-job:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [10.x]
@@ -33,6 +33,7 @@ jobs:
         env:
           CI: true
   frontend-job:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [10.x]
