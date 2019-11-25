@@ -1,8 +1,5 @@
-# 小橙子外卖点单系统
+# 。。。
 
- 小橙子外卖点单系统是肥宅快乐队小学期程序设计作业，是一个前后端分离的外卖点单系统，采用SpringBoot+Vue进行开发，上传到github记录一下。
-
-项目地址：[https://github.com/liznsalt/takeout](https://github.com/liznsalt/takeout)
 
 [TOC]
 
