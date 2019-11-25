@@ -1,1 +1,0 @@
-INSERT INTO ejile.admin (aId, aName, aPassword) VALUES (1, 'mai', '122a8f9b270283b9814d03b7678cd9c4');
