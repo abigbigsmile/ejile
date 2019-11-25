@@ -18,6 +18,9 @@ spring:
     host: 120.27.243.204
     port: 6379
     password: yang123(*&
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
 logging:
   level:
