@@ -49,6 +49,19 @@ public class JWTUtils {
     }
 
     /**
+     * 获得token中的信息
+     * @return token中包含的id
+     */
+    public static String getUserId(String token) {
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getClaim("id").asString();
+        } catch (JWTDecodeException e) {
+            return null;
+        }
+    }
+
+    /**
      * @param user 用户名
      * @param secret 用户的密码
      * @return 加密的token
