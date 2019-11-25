@@ -15,13 +15,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: npm install, build
-      - run: |
+        run: |
           npm ci
           npm run build --if-present
         working-directory: ./admin
-      - run: |
-          npm ci
-          npm run build --if-present
-        working-directory: ./fronted
         env:
           CI: true
