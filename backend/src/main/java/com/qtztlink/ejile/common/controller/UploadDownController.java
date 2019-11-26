@@ -1,21 +1,38 @@
 package com.qtztlink.ejile.common.controller;
 
+import com.google.gson.Gson;
 import com.qtztlink.ejile.common.bean.ResponseBean;
+import org.apache.tomcat.jni.FileInfo;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.qiniu.common.QiniuException;
+import com.qiniu.common.Zone;
+import com.qiniu.http.Response;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.storage.model.DefaultPutRet;
+import com.qiniu.util.Auth;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 @RestController
 public class UploadDownController {
+    private static final String ACCESSKEY = "WFu4RDKywdcDlQCYJhcBaQh0uZlHik79PFo3WCRh";
+    private static final String SECRET_KEY = "Zx3CSdhhJZMIetxUiRp2rBqCtgSp7Qf6Sb8EiseP";
+    private static final String BUCKET = "shop-cloud";
+    private static final String DOMAIN = "http://cloud.yhhu.xyz/";
+
     /**
      * 文件上传
+     *
      * @param picture
      * @param request
      * @return
@@ -24,49 +41,22 @@ public class UploadDownController {
     public ResponseBean upload(
             @RequestParam("picture") MultipartFile picture,
             HttpServletRequest request
-    ) {
-
-        //获取文件在服务器的储存位置
-        String path = request.getSession().getServletContext().getRealPath("/upload");
-        File filePath = new File(path);
-        System.out.println("文件的保存路径：" + path);
-        if (!filePath.exists() && !filePath.isDirectory()) {
-            System.out.println("目录不存在，创建目录:" + filePath);
-            filePath.mkdir();
-        }
-
-        //获取原始文件名称(包含格式)
-        String originalFileName = picture.getOriginalFilename();
-        System.out.println("原始文件名称：" + originalFileName);
-
-        //获取文件类型，以最后一个`.`为标识
-        String type = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
-        System.out.println("文件类型：" + type);
-        //获取文件名称（不包含格式）
-        String name = originalFileName.substring(0, originalFileName.lastIndexOf("."));
-
-        //设置文件新名称: 当前时间+文件名称（不包含格式）
-        Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String date = sdf.format(d);
-        String fileName = date + name + "." + type;
-        System.out.println("新文件名称：" + fileName);
-
-        //在指定路径下创建一个文件
-        File targetFile = new File(path, fileName);
-
-        //将文件保存到服务器指定位置
+    ) throws IOException {
+        Configuration cfg = new Configuration(Zone.zone2());
+        UploadManager uploadManager = new UploadManager(cfg);
+        Auth auth = Auth.create(ACCESSKEY, SECRET_KEY);
+        String upToken = auth.uploadToken(BUCKET);
         try {
-            picture.transferTo(targetFile);
-            System.out.println("上传成功");
-            System.out.println(path + "/" + fileName);
-            //将文件在服务器的存储路径返回
+            Response response = uploadManager.put((FileInputStream) picture.getInputStream(),
+                    UUID.randomUUID().toString().replace("-", ""),
+                    upToken, null, null);
+            // 解析上传成功的结果
+            DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
+            // 这个returnPath是获得到的外链地址,通过这个地址可以直接打开图片
             return new ResponseBean().code(200)
                     .message("SUCCESS")
-                    .data("http://localhost:8080/ejile/upload/" + fileName); // TODO: 关键
-        } catch (IOException e) {
-            System.out.println("上传失败");
-            e.printStackTrace();
+                    .data(DOMAIN +  putRet.key); // TODO: 关键
+        } catch (QiniuException ex) {
             return new ResponseBean().code(500)
                     .message("上传失败")
                     .data(null);
