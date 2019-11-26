@@ -1,12 +1,6 @@
 package com.qtztlink.ejile.common.controller;
 
 import com.google.gson.Gson;
-import com.qtztlink.ejile.common.bean.ResponseBean;
-import org.apache.tomcat.jni.FileInfo;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -14,13 +8,15 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import com.qtztlink.ejile.common.bean.ResponseBean;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 @RestController
@@ -55,7 +51,7 @@ public class UploadDownController {
             // 这个returnPath是获得到的外链地址,通过这个地址可以直接打开图片
             return new ResponseBean().code(200)
                     .message("SUCCESS")
-                    .data(DOMAIN +  putRet.key); // TODO: 关键
+                    .data(DOMAIN +  putRet.key);
         } catch (QiniuException ex) {
             return new ResponseBean().code(500)
                     .message("上传失败")
