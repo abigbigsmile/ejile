@@ -1,19 +1,19 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="8" :offset="7" style="margin-top: 70px">
-      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form ref="ruleForm" :model="ruleForm" status-icon :rules="rules" label-width="100px" class="demo-ruleForm">
         <el-form-item label="旧密码" prop="oldPass">
-          <el-input type="password" v-model="ruleForm.oldPass" autocomplete="off" placeholder="请输入旧密码"></el-input>
+          <el-input v-model="ruleForm.oldPass" type="password" autocomplete="off" placeholder="请输入旧密码" />
         </el-form-item>
         <el-form-item label="新密码" prop="pass">
-          <el-input type="password" v-model="ruleForm.pass" autocomplete="off" placeholder="请输入新密码"></el-input>
+          <el-input v-model="ruleForm.pass" type="password" autocomplete="off" placeholder="请输入新密码" />
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" placeholder="请再次输入新密码"></el-input>
+          <el-input v-model="ruleForm.checkPass" type="password" autocomplete="off" placeholder="请再次输入新密码" />
         </el-form-item>
         <el-form-item>
-          <el-button type="warning" @click="submitForm('ruleForm')" class="login-btn">提交</el-button>
-          <el-button @click="resetForm('ruleForm')" class="reset-btn">重置</el-button>
+          <el-button type="warning" class="login-btn" @click="submitForm('ruleForm')">提交</el-button>
+          <el-button class="reset-btn" @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -21,77 +21,77 @@
 </template>
 
 <script>
-  import {Notification, MessageBox} from 'element-ui'
+import { Notification, MessageBox } from 'element-ui'
 
-  export default {
-    name: "SPassword",
-    data() {
-      const validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          if (this.ruleForm.checkPass !== '') {
-            this.$refs.ruleForm.validateField('checkPass');
-          }
-          callback();
+export default {
+  name: 'SPassword',
+  data() {
+    const validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass')
         }
-      }
-      const validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.pass) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      }
-      return {
-        ruleForm: {
-          oldPass: '',
-          pass: '',
-          checkPass: ''
-        },
-        rules: {
-          pass: [
-            { validator: validatePass, trigger: 'blur' }
-          ],
-          checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
-          ]
-        }
-      };
-    },
-
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.$post('/shop/changePassword', {
-              SID: this.$db.get('USER_ID'),
-              oldPassword: this.ruleForm.oldPass,
-              newPassword: this.ruleForm.pass
-            }).then(res => {
-              Notification.success({
-                title: '系统提示',
-                message: '修改成功'
-              })
-            }).catch(err => {
-              console.log(err)
-            })
-          } else {
-            Notification.error({
-              title: '系统提示',
-              message: '两次密码不一致'
-            })
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+        callback()
       }
     }
+    const validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      ruleForm: {
+        oldPass: '',
+        pass: '',
+        checkPass: ''
+      },
+      rules: {
+        pass: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        checkPass: [
+          { validator: validatePass2, trigger: 'blur' }
+        ]
+      }
+    }
+  },
+
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$post('/shop/changePassword', {
+            SID: this.$db.get('USER_ID'),
+            oldPassword: this.ruleForm.oldPass,
+            newPassword: this.ruleForm.pass
+          }).then(res => {
+            Notification.success({
+              title: '系统提示',
+              message: '修改成功'
+            })
+          }).catch(err => {
+            console.log(err)
+          })
+        } else {
+          Notification.error({
+            title: '系统提示',
+            message: '两次密码不一致'
+          })
+          return false
+        }
+      })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+    }
   }
+}
 </script>
 
 <style scoped>

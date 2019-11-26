@@ -1,11 +1,9 @@
-<template>
-
-</template>
+<template />
 
 <script>
-  export default {
-    name: "SuspendedBall"
-  }
+export default {
+  name: 'SuspendedBall'
+}
 </script>
 
 <style scoped>

@@ -1,34 +1,34 @@
 import axios from 'axios'
 import db from './localstorage'
-import {Dialog, Notification, MessageBox, Message} from "element-ui"
+import { Dialog, Notification, MessageBox, Message } from 'element-ui'
 import store from '../store'
 import moment from 'moment'
 moment.locale('zh-cn')
 
 // 统一配置
-let REQUEST = axios.create({
+const REQUEST = axios.create({
   baseURL: 'http://localhost:8080/ejile/',
   responseType: 'json',
-  validateStatus (status) {
+  validateStatus(status) {
     // 200 外的状态码都认定为失败
     return status === 200
   }
 })
 
-/////////////////
-let SYS_REQUEST = axios.create({
+// ///////////////
+const SYS_REQUEST = axios.create({
   baseURL: 'http://localhost:8080/ejile/',
   responseType: 'json',
-  validateStatus (status) {
+  validateStatus(status) {
     // 200 外的状态码都认定为失败
     return status === 200
   }
 })
-///////////////////
+// /////////////////
 
 REQUEST.interceptors.request.use((config) => {
-  let expireTime = store.state.account.expireTime
-  let now = (new Date()).valueOf()
+  const expireTime = store.state.account.expireTime
+  const now = (new Date()).valueOf()
   // 让token早10秒种过期，提升“请重新登录”弹窗体验
   if (now - expireTime >= -10 * 1000) {
     MessageBox.alert(
@@ -41,7 +41,7 @@ REQUEST.interceptors.request.use((config) => {
       }
     ).then(() => {
       // 刷新
-      db.clear();
+      db.clear()
       location.reload()
     })
   }
@@ -59,7 +59,7 @@ REQUEST.interceptors.response.use((config) => {
   return config
 }, (error) => {
   if (error.response) {
-    let errorMessage = error.response.data === null ? '错误' : error.response.data.message
+    const errorMessage = error.response.data === null ? '错误' : error.response.data.message
     console.log(error.response)
     switch (error.response.status) {
       case 404:
@@ -84,7 +84,7 @@ REQUEST.interceptors.response.use((config) => {
 })
 
 const request = {
-  post (url, params) {
+  post(url, params) {
     return REQUEST.post(url, params, {
       transformRequest: [(params) => {
         let result = ''
@@ -100,7 +100,7 @@ const request = {
       }
     })
   },
-  put (url, params) {
+  put(url, params) {
     return REQUEST.put(url, params, {
       transformRequest: [(params) => {
         let result = ''
@@ -116,13 +116,13 @@ const request = {
       }
     })
   },
-  get (url, params) {
+  get(url, params) {
     let _params
     if (Object.is(params, undefined)) {
       _params = ''
     } else {
       _params = '?'
-      for (let key in params) {
+      for (const key in params) {
         if (params.hasOwnProperty(key) && params[key] !== null) {
           _params += `${key}=${params[key]}&`
         }
@@ -130,13 +130,13 @@ const request = {
     }
     return REQUEST.get(`${url}${_params}`)
   },
-  delete (url, params) {
+  delete(url, params) {
     let _params
     if (Object.is(params, undefined)) {
       _params = ''
     } else {
       _params = '?'
-      for (let key in params) {
+      for (const key in params) {
         if (params.hasOwnProperty(key) && params[key] !== null) {
           _params += `${key}=${params[key]}&`
         }
@@ -146,7 +146,7 @@ const request = {
   },
 
   // 系统内置
-  syspost (url, params) {
+  syspost(url, params) {
     return SYS_REQUEST.post(url, params, {
       transformRequest: [(params) => {
         let result = ''
@@ -162,13 +162,13 @@ const request = {
       }
     })
   },
-  sysget (url, params) {
+  sysget(url, params) {
     let _params
     if (Object.is(params, undefined)) {
       _params = ''
     } else {
       _params = '?'
-      for (let key in params) {
+      for (const key in params) {
         if (params.hasOwnProperty(key) && params[key] !== null) {
           _params += `${key}=${params[key]}&`
         }

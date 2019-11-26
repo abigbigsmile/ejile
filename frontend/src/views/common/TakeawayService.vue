@@ -1,29 +1,29 @@
 <template>
   <div>
-    <component :is="componentName"></component>
+    <component :is="componentName" />
   </div>
 </template>
 
 <script>
-  import consumerHomePage from '../consumer/ConsumerHomePage'
-  import shopHomePage from '../shop/ShopHomePage'
+import consumerHomePage from '../consumer/ConsumerHomePage'
+import shopHomePage from '../shop/ShopHomePage'
 
-    export default {
-      name: "TakeawayService",
-      components:{
-        consumerHomePage,
-        shopHomePage
-      },
-      computed: {
-        componentName() {
-          if (this.$db.get('ROLES') === '"shop"') {
-            return "shopHomePage"
-          } else {
-            return "consumerHomePage"
-          }
-        }
+export default {
+  name: 'TakeawayService',
+  components: {
+    consumerHomePage,
+    shopHomePage
+  },
+  computed: {
+    componentName() {
+      if (this.$db.get('ROLES') === '"shop"') {
+        return 'shopHomePage'
+      } else {
+        return 'consumerHomePage'
       }
     }
+  }
+}
 
 </script>
 

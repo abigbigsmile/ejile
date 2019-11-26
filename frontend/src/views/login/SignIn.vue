@@ -1,9 +1,9 @@
 <template>
   <div class="food-img">
-    <el-button type="primary" v-on:click="shop">商 家 入 驻</el-button>
-    <el-button type="primary" v-on:click="$router.push('/signin/consumer')">用 户 注 册</el-button>
+    <el-button type="primary" @click="shop">商 家 入 驻</el-button>
+    <el-button type="primary" @click="$router.push('/signin/consumer')">用 户 注 册</el-button>
 
-    <el-dialog :visible.sync="dialogVisible" width="60%" >
+    <el-dialog :visible.sync="dialogVisible" width="60%">
       <p>尊敬的商家：</p>
       <p>您好，如果您已经准备完成全部资料，并准备提交申请，在您提交申请前，请务必仔细阅读如下全部声明事项：</p>
       <p>1. 您确认并知悉，您的申请需依次经过线上与线下两次审核，请您在线上审核通过后，不要操作上线，等待线下业务经理到门店现场
@@ -20,7 +20,7 @@
         额赔偿损失，美团外卖亦有权对申请主体提供的的证照等资质和信息进行删除、屏蔽及操作下线等处理。</p>
       <p> 对于以上声明，您如果存在异议，请停止申请或与【 10105557 】联系；如您继续填写并提交申请，则视为您理解上述声明，并确认
         遵守全部事项并在违反时承担责任。</p>
-      <el-checkbox v-model="checked" >我已阅读上述声明</el-checkbox>
+      <el-checkbox v-model="checked">我已阅读上述声明</el-checkbox>
       <el-button type="warning" size="small" class="read-btn" @click="read">确 定</el-button>
     </el-dialog>
 
@@ -28,32 +28,31 @@
 </template>
 
 <script>
-  export default {
-    name: "SignIn",
-    data(){
-      return{
-        checked:false,
-        dialogVisible:false
-      };
+export default {
+  name: 'SignIn',
+  data() {
+    return {
+      checked: false,
+      dialogVisible: false
+    }
+  },
+  methods: {
+    shop() {
+      this.dialogVisible = true
     },
-    methods:{
-      shop(){
-        this.dialogVisible=true;
-      },
-      read(){
-        if(this.checked === true){
-          this.dialogVisible=false;
-          this.$router.push('/signin/shop');
-        }
-        else{
-          this.$message({
-            message: '请阅读上述声明',
-            center: true
-          });
-        }
+    read() {
+      if (this.checked === true) {
+        this.dialogVisible = false
+        this.$router.push('/signin/shop')
+      } else {
+        this.$message({
+          message: '请阅读上述声明',
+          center: true
+        })
       }
     }
   }
+}
 </script>
 
 <style scoped>

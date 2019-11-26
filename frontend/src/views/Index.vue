@@ -21,30 +21,30 @@
               <img class="img-responsive" src="./images/deliver 3.png" alt="" @click="$router.push('/service')">
             </div>
           </el-aside>
-          <el-container >
+          <el-container>
             <el-main>
               <div class="title-1">
-                      <span class="el-icon">
-                        <i class="el-icon-present" @click="$router.push('/service')"> 美食 Delicacy</i>
-                      </span>
+                <span class="el-icon">
+                  <i class="el-icon-present" @click="$router.push('/service')"> 美食 Delicacy</i>
+                </span>
                 <div class="subtitle">大牌优惠</div>
               </div>
               <div class="title-2">
-                      <span class="el-icon">
-                        <i class="el-icon-ice-cream" @click="$router.push('/service')"> 甜点饮品 Desserts&Drinks</i>
-                      </span>
+                <span class="el-icon">
+                  <i class="el-icon-ice-cream" @click="$router.push('/service')"> 甜点饮品 Desserts&Drinks</i>
+                </span>
                 <div class="subtitle">幸福甜蜜</div>
               </div>
               <div class="title-3">
-                      <span class="el-icon">
-                        <i class="el-icon-grape" @click="$router.push('/service')"> 水果生鲜 Fresh foods</i>
-                      </span>
+                <span class="el-icon">
+                  <i class="el-icon-grape" @click="$router.push('/service')"> 水果生鲜 Fresh foods</i>
+                </span>
                 <div class="subtitle">新鲜速达</div>
               </div>
               <div class="title-4">
-                      <span class="el-icon">
-                        <i class="el-icon-shopping-cart-2" @click="$router.push('/service')"> 超市便利 Supermarket</i>
-                      </span>
+                <span class="el-icon">
+                  <i class="el-icon-shopping-cart-2" @click="$router.push('/service')"> 超市便利 Supermarket</i>
+                </span>
                 <div class="subtitle">优惠促销</div>
               </div>
             </el-main>
@@ -64,12 +64,12 @@
         <el-col :span="5" class="card">
           <el-card shadow="hover" :body-style="{ padding: '10px'}">
             <el-container>
-              <el-header height="500" >
+              <el-header height="500">
                 <img src="./images/case1.png" class="image" alt="">
               </el-header>
               <el-main height="100">
                 <div>外卖骑手人物：李君</div>
-                <h3 class="card-title" v-on:click="">为减肥而成为兼职骑手，后来副业变“主业”</h3>
+                <h3 class="card-title" @click="">为减肥而成为兼职骑手，后来副业变“主业”</h3>
               </el-main>
             </el-container>
           </el-card>
@@ -78,12 +78,12 @@
         <el-col :span="5" class="card">
           <el-card shadow="hover" :body-style="{ padding: '10px'}">
             <el-container>
-              <el-header height="500" >
+              <el-header height="500">
                 <img src="./images/case2.png" class="image" alt="">
               </el-header>
               <el-main height="100">
                 <div>外卖骑手人物：徐振</div>
-                <h3 class="card-title" v-on:click="">平凡路上的英雄梦</h3>
+                <h3 class="card-title" @click="">平凡路上的英雄梦</h3>
               </el-main>
             </el-container>
           </el-card>
@@ -92,12 +92,12 @@
         <el-col :span="5" class="card">
           <el-card shadow="hover" :body-style="{ padding: '10px'}">
             <el-container>
-              <el-header height="500" >
+              <el-header height="500">
                 <img src="./images/case1.png" class="image" alt="">
               </el-header>
               <el-main height="100">
                 <div>外卖服务市场</div>
-                <h3 class="card-title" v-on:click="">接入经营助手服务</h3>
+                <h3 class="card-title" @click="">接入经营助手服务</h3>
               </el-main>
             </el-container>
           </el-card>
@@ -106,12 +106,12 @@
         <el-col :span="5" class="card">
           <el-card shadow="hover" :body-style="{ padding: '10px'}">
             <el-container>
-              <el-header height="500" >
+              <el-header height="500">
                 <img src="./images/case4.png" class="image" alt="">
               </el-header>
               <el-main height="100">
                 <div>《骑手安全生活指南》</div>
-                <h3 class="card-title" v-on:click="">保障骑手安心无忧送餐路</h3>
+                <h3 class="card-title" @click="">保障骑手安心无忧送餐路</h3>
               </el-main>
             </el-container>
           </el-card>
@@ -139,9 +139,9 @@
 </template>
 
 <script>
-  export default {
-    name: "Index"
-  }
+export default {
+  name: 'Index'
+}
 </script>
 
 <style scoped>

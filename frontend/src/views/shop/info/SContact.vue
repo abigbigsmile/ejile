@@ -1,15 +1,15 @@
 <template>
   <div>
-    <ContactDialog></ContactDialog>
+    <ContactDialog />
   </div>
 </template>
 
 <script>
-  import ContactDialog from "@/components/ContactDialog"
-  export default {
-    name: "SContact",
-    components: {ContactDialog}
-  }
+import ContactDialog from '@/components/ContactDialog'
+export default {
+  name: 'SContact',
+  components: { ContactDialog }
+}
 </script>
 
 <style scoped>

@@ -1,9 +1,9 @@
 export default {
-  welcome (username) {
+  welcome(username) {
     const date = new Date()
     const hour = date.getHours()
-    let time = hour < 6 ? '早上好' : (hour <= 11 ? '上午好' : (hour <= 13 ? '中午好' : (hour <= 18 ? '下午好' : '晚上好')))
-    let welcomeArr = [
+    const time = hour < 6 ? '早上好' : (hour <= 11 ? '上午好' : (hour <= 13 ? '中午好' : (hour <= 18 ? '下午好' : '晚上好')))
+    const welcomeArr = [
       '喝杯咖啡休息下吧☕',
       '要不要和朋友打局LOL',
       '要不要和朋友打局守望先锋',
@@ -17,13 +17,13 @@ export default {
       '周末要不要去看电影？',
       '今天水惊惊群了吗？'
     ]
-    let index = Math.floor((Math.random() * welcomeArr.length))
+    const index = Math.floor((Math.random() * welcomeArr.length))
     return `${time}，${username}，${welcomeArr[index]}`
   },
 
   userString(str) {
-    str = str.substr(1);
-    str = str.substr(0, str.length - 1);
+    str = str.substr(1)
+    str = str.substr(0, str.length - 1)
     return str
   },
 
@@ -34,11 +34,11 @@ export default {
    */
   formatList(data, name) {
     // 检测传参
-    if(!name && typeof data !== Array && typeof name !== String){
+    if (!name && typeof data !== Array && typeof name !== String) {
       return
     }
-    let obj = {}  // 申明一个大对象用来归类
-    let Arr = []  // 申明一个数组仓库
+    const obj = {} // 申明一个大对象用来归类
+    const Arr = [] // 申明一个数组仓库
     data.forEach(item => {
       !obj[item[name]] && (obj[item[name]] = [])
       obj[item[name]].push(item)
@@ -51,17 +51,17 @@ export default {
   },
 
   filterByTimeAndName(orderList, time, name) {
-    let obj = {}
-    let Arr = []
+    const obj = {}
+    const Arr = []
     orderList.forEach(item => {
       !obj[item[time]] && (obj[item[time]] = [])
       obj[item[time]].push(item)
     })
-    for (let attr in obj) {
-      let arr = obj[attr]
+    for (const attr in obj) {
+      const arr = obj[attr]
       obj[attr].total = 0
       obj[attr].time = attr
-      for (let x of arr) {
+      for (const x of arr) {
         obj[attr].total += x.total
         obj[attr].consumerName = x.consumerName
         obj[attr].shopName = x.shopName

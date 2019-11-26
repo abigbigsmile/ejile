@@ -10,6 +10,6 @@ export default {
     if (type === null) {
       return null
     }
-    return `@asserts/img/${SID}_${GID}.${type}`;
+    return `@asserts/img/${SID}_${GID}.${type}`
   }
 }

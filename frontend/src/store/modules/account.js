@@ -12,23 +12,23 @@ export default {
     info: db.get('USER_INFO')
   },
   mutations: {
-    setToken (state, val) {
+    setToken(state, val) {
       db.save('USER_TOKEN', val)
       state.token = val
     },
-    setExpireTime (state, val) {
+    setExpireTime(state, val) {
       db.save('EXPIRE_TIME', val)
       state.expireTime = val
     },
-    setUser (state, val) {
+    setUser(state, val) {
       db.save('USER', val)
       state.user = val
     },
-    setPermissions (state, val) {
+    setPermissions(state, val) {
       db.save('PERMISSIONS', val)
       state.permissions = val
     },
-    setRoles (state, val) {
+    setRoles(state, val) {
       db.save('ROLES', val)
       state.roles = val
     },
