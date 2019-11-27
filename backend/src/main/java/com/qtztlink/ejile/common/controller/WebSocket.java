@@ -1,5 +1,6 @@
 package com.qtztlink.ejile.common.controller;
 
+import com.qtztlink.ejile.common.websocket.MyWebSocket;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -9,9 +10,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 @Component
 @ServerEndpoint(value = "/myWebSocket")
-public class MyWebSocket {
+public class WebSocket {
     //用来存放每个客户端对应的MyWebSocket对象
-    private static CopyOnWriteArraySet<MyWebSocket> user = new CopyOnWriteArraySet<MyWebSocket>();
+    private static CopyOnWriteArraySet<WebSocket> user = new CopyOnWriteArraySet<WebSocket>();
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
@@ -19,7 +20,7 @@ public class MyWebSocket {
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
         //群发消息
-        for (MyWebSocket myWebSocket : user) {
+        for (WebSocket myWebSocket : user) {
             myWebSocket.session.getBasicRemote().sendText(message);
         }
     }
