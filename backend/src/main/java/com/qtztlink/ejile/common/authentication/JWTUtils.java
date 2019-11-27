@@ -52,10 +52,10 @@ public class JWTUtils {
      * 获得token中的信息
      * @return token中包含的id
      */
-    public static String getUserId(String token) {
+    public static Integer getUserId(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("id").asString();
+            return jwt.getClaim("id").asInt();
         } catch (JWTDecodeException e) {
             return null;
         }
