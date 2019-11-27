@@ -1,6 +1,5 @@
 package com.qtztlink.ejile.system.model.communication;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Tiger
@@ -46,14 +44,14 @@ public class MessageContact implements Serializable {
     String toUser;
     /**
      * 消息类型
-     * 1代表互动消息 2代表新订单信息
+     * 1代表商家发送给用户 2代表用户发给商家 3代表新订单信息
      **/
     @Column(name = "message_type",columnDefinition = "int(1)")
     Integer messageType;
 
     /**
      * 状态
-     * 1代表未被消费 2代表已被消费
+     * 1代表未被消费 0代表已被消费
      **/
     @Column(name = "status",columnDefinition = "int(1)")
     Integer status;
