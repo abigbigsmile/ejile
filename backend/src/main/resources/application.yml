@@ -17,7 +17,7 @@ spring:
   redis:
     host: 120.27.243.204
     port: 6379
-    password: yang123(*&
+    password: ejile
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
