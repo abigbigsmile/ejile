@@ -1,7 +1,7 @@
 <template>
     <div>
       <el-col :span="4">
-        <el-input v-model="searchState" placeHolder="按操作搜索"></el-input>
+        <el-input v-model="searchState" placeHolder="按操作搜索"/>
       </el-col>
       <el-col :span="4">
         <div class="block">
@@ -15,48 +15,48 @@
         </div>
       </el-col>
       <el-col :span="4" :offset="12">
-        <export-excel v-if="dataInPage() != null" :list="dataInPage()"
+        <export-excel v-if="this.logList != null" :list="this.logList"
                       :t-header="['#ID', '创建时间', 'IP地址', '服务器端方法', '参数', '操作描述', '响应时间']"
-                      :t-value="['ID', 'CREATE_TIME', 'IP', 'METHOD', 'PARAMS', 'OPERATION', '_TIME']"></export-excel>
+                      :t-value="['id', 'createTime', 'ip', 'method', 'params', 'operation', 'time']"></export-excel>
       </el-col>
-
-      <el-table :data="dataInPage().slice((currentPage-1)*cntPerPage,currentPage*cntPerPage)" style="width: 100%">
+<!--      <el-table :data="this.logList.slice((currentPage-1)*cntPerPage,currentPage*cntPerPage)" style="width: 100%">-->
+      <el-table :data="this.logList" style="width: 100%">
         <el-table-column
           sortable
           fixed="left"
-          prop="ID"
+          prop="id"
           label="#ID"
           width="180">
         </el-table-column>
         <el-table-column
           sortable
-          prop="CREATE_TIME"
+          prop="createTime"
           label="创建时间"
           width="230">
         </el-table-column>
         <el-table-column
-          prop="IP"
+          prop="ip"
           label="IP地址"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="METHOD"
+          prop="method"
           label="服务器端方法"
           width="230">
         </el-table-column>
         <el-table-column
-          prop="PARAMS"
+          prop="params"
           label="参数"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="OPERATION"
+          prop="operation"
           label="操作描述"
           width="180">
         </el-table-column>
         <el-table-column
           sortable
-          prop="_TIME"
+          prop="time"
           label="响应时间"
           width="180">
         </el-table-column>
@@ -70,7 +70,7 @@
           :page-sizes="[5, 10, 20, 40]"
           :page-size="5"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="dataInPage().length">
+          :total="this.totalElements">
         </el-pagination>
       </div>
     </div>
@@ -85,7 +85,6 @@
       return {
         logList: [
           {
-            //CREATE_TIME: "2019-11-15T02:36:35.000+0000",
             CREATE_TIME: "2019-11-15 02:36:35",
             ID: 1,
             IP: "127.0.0.1",
@@ -96,40 +95,56 @@
             _TIME: 0
           }
         ],
-
         currentPage: 1,
         cntPerPage: 5,
-
         searchState: '',
-
+        totalElements: 1,
         dateValue: ''
       }
     },
     created() {
-      this.$get('/log/all').then(res => {
-        this.logList = res.data
-      }).catch(err => console.log(err))
+      this.fetchData()
     },
     methods: {
       handleSizeChange(val) {
         // console.log(`每页 ${val} 条`);
         this.cntPerPage = val
+        this.currentPage=1
+        this.fetchData()
       },
       handleCurrentChange(val) {
         // console.log(`当前页: ${val}`);
         this.currentPage = val
+        this.fetchData()
       },
-      dataInPage() {
-
-        let data = this.logList
-          .filter(data =>
-          !this.searchState || data.OPERATION.toLowerCase().includes(this.searchState.toLowerCase()))
-          .filter(data =>
-            !this.dateValue || (new Date(this.dateValue[0]) <= new Date(data.CREATE_TIME) && new Date(data.CREATE_TIME) <=  new Date(this.dateValue[1])))
-        this.currentPage = Math.min(this.currentPage, Math.ceil(data.length / this.cntPerPage))
-        return data
+      fetchData(){
+        let url="/log?page="+this.currentPage+"&size="+this.cntPerPage
+        if(this.searchState!==''){
+          url=url+"&keyword="+this.searchState
+        }
+        console.log(this.dateValue)
+        if(this.dateValue!==''){
+          let newDate=[]
+          this.dateValue.forEach(item=>{
+            var d = new Date(item)
+            let youWant=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+            newDate.push(youWant)
+          })
+          url=url+"&choseTime="+newDate
+        }
+        this.$get(url).then(res => {
+          this.logList = res.data.data.content
+          this.totalElements=res.data.data.totalElements
+        }).catch(err => console.log(err))
       }
-
+    },
+    watch: {
+      dateValue(val){
+        this.fetchData()
+      },
+      searchState(val){
+        this.fetchData()
+      }
     }
   }
 </script>
