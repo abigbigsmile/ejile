@@ -1,13 +1,20 @@
 package com.qtztlink.ejile.system.model.communication;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import	java.io.Serializable;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
@@ -26,10 +33,12 @@ public class Contact implements Serializable {
 
     private String sname;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date time;
 
     private String content;
 
     private String state;
+
+    private Integer isRead;
 }

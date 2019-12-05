@@ -30,30 +30,36 @@ public class MessageContact implements Serializable {
     /**
      * 消息内容
      **/
-    @Column(name = "message",columnDefinition = "text")
+    @Column(name = "message", columnDefinition = "text")
     String message;
     /**
      * 谁发送的
      **/
-    @Column(name = "from_user",columnDefinition = "int(10)")
+    @Column(name = "from_user", columnDefinition = "int(10)")
     String fromUser;
+
+    @Column(name = "from_id")
+    Long fromId;
     /**
      * 发给谁
      **/
-    @Column(name = "to_user",columnDefinition = "int(10)")
+    @Column(name = "to_user", columnDefinition = "int(10)")
     String toUser;
+
+    @Column(name = "to_id")
+    Long toId;
     /**
      * 消息类型
      * 1代表商家发送给用户 2代表用户发给商家 3代表新订单信息
      **/
-    @Column(name = "message_type",columnDefinition = "int(1)")
+    @Column(name = "message_type", columnDefinition = "int(1)")
     Integer messageType;
 
     /**
      * 状态
      * 1代表未被消费 0代表已被消费
      **/
-    @Column(name = "status",columnDefinition = "int(1)")
+    @Column(name = "status", columnDefinition = "int(1)")
     Integer status;
 
     @CreatedDate

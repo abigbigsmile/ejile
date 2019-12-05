@@ -62,6 +62,19 @@ public class JWTUtils {
     }
 
     /**
+     * 获得token中的信息
+     * @return token中包含的角色
+     */
+    public static String getUserRole(String token) {
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getClaim("roles").asString();
+        } catch (JWTDecodeException e) {
+            return null;
+        }
+    }
+
+    /**
      * @param user 用户名
      * @param secret 用户的密码
      * @return 加密的token
