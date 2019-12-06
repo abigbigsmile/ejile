@@ -27,7 +27,8 @@ Vue.prototype.$sysget = request.sysget
 // config
 Vue.config.productionTip = false
 Vue.prototype.GLOBAL = _global // 定义全局变量
-
+Vue.prototype.$webscoket = null
+Vue.prototype.$myWebscoket = null
 // js时间格式化 @[网上找的方法]
 Date.prototype.Format = function(fmt) {
   const o = {

@@ -18,7 +18,7 @@ public class ContactMapper implements RowMapper<Contact> {
         contact.setState(resultSet.getString("state"));
         contact.setCname(resultSet.getString("cname"));
         contact.setSname(resultSet.getString("sname"));
-        contact.setIsRead(resultSet.getInt("isRead"));
+//        contact.setIsRead(resultSet.getInt("isRead"));
         return contact;
     }
 }

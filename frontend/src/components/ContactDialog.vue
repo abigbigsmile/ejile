@@ -2,9 +2,9 @@
   <div>
     <el-container>
       <el-aside width="160px">
-        <div v-for="u in filterList" class="friendListDiv" :class="{currentChatFriend:uName(u)===nowOther}" @click="toggleFriend(u)">
+        <div v-for="u in filterList" :key="u[0].id" class="friendListDiv" :class="{currentChatFriend:uName(u)===nowOther}" @click="toggleFriend(u)">
           <!--   聊天人员       -->
-          <el-badge :is-dot="false">{{ uName(u) }}</el-badge>
+          <el-badge :is-dot="isDot(u)">{{ uName(u) }}</el-badge>
         </div>
         <div style="background-color: #FFCD56;height: 1px;width: 160px;" />
       </el-aside>
@@ -23,6 +23,7 @@
             <!--发送来的消息-->
             <div
               v-if="isFrom(message)"
+              :key="message.id"
               style="display: flex;justify-content: flex-start;align-items: center;box-sizing: border-box;"
             >
               <div
@@ -34,6 +35,7 @@
             <!--发出去的消息-->
             <div
               v-else
+              :key="message.id"
               style="display: flex;justify-content: flex-end;align-items: center;box-sizing: border-box;"
             >
               <div
@@ -77,7 +79,7 @@ export default {
         cid: 20,
         cname: 'atom',
         content: 'Hello world',
-        sid: 1,
+        sid: 2,
         sname: 'mai',
         state: '1',
         time: '2019-06-24 12:33:17'
@@ -103,7 +105,8 @@ export default {
   created() {
     // 没规定对方是谁
     if (typeof this.other === 'undefined') {
-      let url = ''; let otherId
+      let url = ''
+      let otherId
       if (this.$db.get('ROLES') === '"shop"') {
         url = '/contact/getInfoBySid'
         otherId = 'cid'
@@ -116,6 +119,7 @@ export default {
       }).then(res => {
         this.contactList = res.data.data
         // filter
+        // console.log(this.contactList)
         this.filterList = util.formatList(this.contactList, otherId)
         // console.log(this.filterList)
         // 当前聊天在第一个
@@ -131,7 +135,10 @@ export default {
         params = { sid: this.other, cid: this.$db.get('USER_ID') }
       }
       this.$get('/contact/getInfoBySidCid', params).then(res => {
-        this.contactList = res.data.data
+        if (res.data.data !== null) {
+          this.contactList = res.data.data
+        }
+        console.log(this.contactList)
         // 此种情况无需 filter
         this.filterList = []
         this.filterList.push(this.contactList)
@@ -202,6 +209,24 @@ export default {
       this.nowContactList = otherUser
       this.nowOther = this.uName(otherUser)
       this.nowOtherId = this.isShop() ? this.nowContactList[0].cid : this.nowContactList[0].sid
+    },
+    isDot(u) {
+      let flag = false
+      if (this.$db.get('ROLES') === '"shop"') {
+        u.forEach(item => {
+          if (item.state === '0' && item.isRead === '0') {
+            flag = true
+          }
+        })
+      } else {
+        u.forEach(item => {
+          if (item.state === '1' && item.isRead === '0') {
+            console.log(item)
+            flag = true
+          }
+        })
+      }
+      return flag
     }
   }
 }

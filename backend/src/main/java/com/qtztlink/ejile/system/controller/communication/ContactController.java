@@ -11,11 +11,13 @@ import com.qtztlink.ejile.system.service.user.ShopService;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,19 +27,18 @@ import java.util.List;
 @RestController
 public class ContactController {
 
-    @Autowired
+    @Resource
     private ContactService contactService;
-    @Autowired
+    @Resource
     private ShopService shopService;
-    @Autowired
+    @Resource
     private ConsumerService consumerService;
 
     @RequestMapping("/contact/getInfoBySidCid")
-    @ResponseBody
     public ResponseBean getContactInfoBySidCid(int sid, int cid) {
-        List<Contact> contactList = this.contactService.queryContactBySIDCID(sid, cid);
+        List<Contact> contactList = contactService.queryContactBySIDCID(sid, cid);
         if (contactList == null) {
-            contactList=new ArrayList<>();
+            contactList = new ArrayList<>();
             Shop shop = shopService.queryShopById(sid);
             Consumer consumer = consumerService.queryConsumerById(cid);
             Contact contact = new Contact();
@@ -48,6 +49,7 @@ public class ContactController {
             contact.setTime(new Date());
             contact.setCname(consumer.getUsername());
             contact.setState("0");
+            contact.setIsRead("1");
             contactList.add(contact);
         }
         return new ResponseBean().code(200)
@@ -56,9 +58,8 @@ public class ContactController {
     }
 
     @RequestMapping("/contact/getInfoBySid")
-    @ResponseBody
     public ResponseBean getContactInfoBySid(@RequestParam("uid") int sid) {
-        List<Contact> contactList = this.contactService.queryContactBySID(sid);
+        List<Contact> contactList = contactService.queryContactBySID(sid);
         if (contactList != null) {
             return new ResponseBean().code(200)
                     .message("SUCCESS")
@@ -71,9 +72,8 @@ public class ContactController {
     }
 
     @RequestMapping("/contact/getInfoByCid")
-    @ResponseBody
     public ResponseBean getContactInfoByCid(@RequestParam("uid") int cid) {
-        List<Contact> contactList = this.contactService.queryContactByCID(cid);
+        List<Contact> contactList = contactService.queryContactByCID(cid);
         if (contactList != null) {
             return new ResponseBean().code(200)
                     .message("SUCCESS")
@@ -86,7 +86,6 @@ public class ContactController {
     }
 
     @RequestMapping("/contact/add")
-    @ResponseBody
     public ResponseBean addContact(int cid,
                                    int sid,
                                    Date ctime,
@@ -99,8 +98,8 @@ public class ContactController {
         contact.setTime(ctime);
         contact.setState(state);
         contact.setContent(content);
-        int res = this.contactService.add(contact);
-        if (res == 1) {
+        contact = contactService.add(contact);
+        if (contact.getId() != 0) {
             return new ResponseBean()
                     .code(200)
                     .message("Success")
@@ -108,5 +107,13 @@ public class ContactController {
         } else {
             throw new UnauthorizedException("发送失败，请联系管理员");
         }
+    }
+
+    @PutMapping("/contact/check")
+    public ResponseBean checkContact(int cid, int sid, String state) {
+        return new ResponseBean()
+                .code(200)
+                .message("Success")
+                .data(1);
     }
 }
