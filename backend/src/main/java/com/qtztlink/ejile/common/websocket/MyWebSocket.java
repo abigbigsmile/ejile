@@ -34,14 +34,18 @@ public class MyWebSocket extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         String userId = getUserId(session);
-        userSession.put(userId, session);
+        String userRole = getUserRole(session);
+        String key = userRole + userId;
+        userSession.put(key, session);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         String userId = getUserId(session);
-        if (userSession.get(userId) != null) {
-            userSession.remove(userId);
+        String userRole = getUserRole(session);
+        String key = userRole + userId;
+        if (userSession.get(key) != null) {
+            userSession.remove(key);
         }
     }
 
@@ -68,5 +72,11 @@ public class MyWebSocket extends TextWebSocketHandler {
         UriComponents uriComponents = UriComponentsBuilder.fromUri(session.getUri()).build();
         String token = Objects.requireNonNull(uriComponents.getQueryParams().getFirst("token")).replace("%22", "");
         return Objects.requireNonNull(JWTUtils.getUserId(token)).toString();
+    }
+
+    private String getUserRole(WebSocketSession session) {
+        UriComponents uriComponents = UriComponentsBuilder.fromUri(session.getUri()).build();
+        String token = Objects.requireNonNull(uriComponents.getQueryParams().getFirst("token")).replace("%22", "");
+        return Objects.requireNonNull(JWTUtils.getUserRole(token));
     }
 }
