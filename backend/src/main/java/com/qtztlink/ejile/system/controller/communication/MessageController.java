@@ -2,7 +2,6 @@ package com.qtztlink.ejile.system.controller.communication;
 
 import com.qtztlink.ejile.common.bean.ResponseBean;
 import com.qtztlink.ejile.system.model.communication.MessageContact;
-import com.qtztlink.ejile.system.service.communication.MessageService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +18,6 @@ import javax.annotation.Resource;
 public class MessageController {
     @Resource
     RedisTemplate redisTemplate;
-    @Resource
-    MessageService messageService;
 
     @GetMapping("/message")
     public ResponseBean getContactList(int userId) {
@@ -29,7 +26,6 @@ public class MessageController {
 
     @PostMapping("/message")
     public ResponseBean sendMessage(MessageContact messageContact) {
-        messageService.addMessage(messageContact);
         redisTemplate.convertAndSend("CHAT_CHANNEL", messageContact);
         return new ResponseBean().code(200).message("SUCCESS");
     }

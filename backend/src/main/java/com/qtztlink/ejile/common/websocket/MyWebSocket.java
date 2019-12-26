@@ -36,6 +36,7 @@ public class MyWebSocket extends TextWebSocketHandler {
         String userId = getUserId(session);
         String userRole = getUserRole(session);
         String key = userRole + userId;
+        System.out.println(key+"----open");
         userSession.put(key, session);
     }
 
@@ -47,6 +48,7 @@ public class MyWebSocket extends TextWebSocketHandler {
         if (userSession.get(key) != null) {
             userSession.remove(key);
         }
+        System.out.println(key+"----close");
     }
 
     @Override
@@ -57,7 +59,13 @@ public class MyWebSocket extends TextWebSocketHandler {
     }
 
     static void redisSendToUser(MessageContact messageEntity) throws IOException {
-        WebSocketSession webSocketSession = userSession.get(messageEntity.getToUser());
+        String key;
+        if ("1".equals(messageEntity.getState())){
+            key="consumer"+messageEntity.getCid();
+        }else{
+            key="shop"+messageEntity.getSid();
+        }
+        WebSocketSession webSocketSession = userSession.get(key);
         if (webSocketSession != null) {
             ObjectMapper mapper = new ObjectMapper();
             TextMessage returnMessage = new TextMessage(mapper.writeValueAsString(messageEntity));

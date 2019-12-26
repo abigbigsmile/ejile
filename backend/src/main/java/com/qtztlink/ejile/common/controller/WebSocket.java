@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 @Component
-@ServerEndpoint(value = "/myWebSocket")
+//@ServerEndpoint(value = "/myWebSocket")
 public class WebSocket {
     private static CopyOnWriteArraySet<WebSocket> user = new CopyOnWriteArraySet<>();
 
