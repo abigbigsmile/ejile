@@ -151,6 +151,7 @@ export default {
     // 设置websocket
     const _this = this
     this.$webscoket.onmessage = function(res) {
+      console.log(res)
       // TODO: 判断是否属于自己的聊天
       const data = JSON.parse(res.data)
       if (_this.isShop()) { // 商店的情况
@@ -189,9 +190,9 @@ export default {
       // /contact/add
       let params
       if (this.$db.get('ROLES') === '"shop"') {
-        params = { cid: this.nowOtherId, sid: this.$db.get('USER_ID'), ctime: date, state: '1', content: this.msg }
+        params = { cid: this.nowOtherId, sid: this.$db.get('USER_ID'), ctime: date, state: '1', content: this.msg, isRead: '0' }
       } else {
-        params = { cid: this.$db.get('USER_ID'), sid: this.nowOtherId, ctime: date, state: '0', content: this.msg }
+        params = { cid: this.$db.get('USER_ID'), sid: this.nowOtherId, ctime: date, state: '0', content: this.msg, isRead: '0' }
       }
       this.$get('/contact/add', params).then(res => {
         this.$message({
@@ -208,7 +209,26 @@ export default {
     toggleFriend(otherUser) {
       this.nowContactList = otherUser
       this.nowOther = this.uName(otherUser)
-      this.nowOtherId = this.isShop() ? this.nowContactList[0].cid : this.nowContactList[0].sid
+      let params
+      if (this.isShop()) {
+        this.nowOtherId = this.nowContactList[0].cid
+        params = { cid: this.nowContactList[0].cid, sid: this.nowContactList[0].sid, state: '0' }
+        this.$put('/contact', params).then(res => {
+          this.nowContactList.forEach(item => {
+            item.isRead = '1'
+          })
+          // console.log(res)
+        }).catch(err => console.log(err))
+      } else {
+        this.nowOtherId = this.nowContactList[0].sid
+        params = { cid: this.nowContactList[0].cid, sid: this.nowContactList[0].sid, state: '1' }
+        this.$put('/contact', params).then(res => {
+          this.nowContactList.forEach(item => {
+            item.isRead = '1'
+          })
+          // console.log(res)
+        }).catch(err => console.log(err))
+      }
     },
     isDot(u) {
       let flag = false
