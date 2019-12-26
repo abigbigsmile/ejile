@@ -158,7 +158,7 @@ export default {
   created() {
     if ((typeof this.userToken === 'string')) {
       if ('WebSocket' in window) {
-        this.$root.$myWebscoket = new WebSocket('ws://localhost:8080/ejile/chat?token=' + this.userToken.valueOf())
+        this.$root.$myWebscoket = new WebSocket('ws://localhost:8080/ejile/myWebSocket?token=' + this.userToken.valueOf())
         this.$root.$myWebscoket.onmessage = function(res) {
           console.log(res)
         }
