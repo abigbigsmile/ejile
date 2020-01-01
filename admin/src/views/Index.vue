@@ -21,10 +21,14 @@
               <i class="el-icon-s-order"></i>
               <span slot="title">订单管理</span>
             </el-menu-item>
-<!--            <el-menu-item index="5" class="title" @click="$router.push('/chat')">-->
-<!--              <i class="el-icon-chat-line-round"></i>-->
-<!--              <span slot="title">互动管理</span>-->
-<!--            </el-menu-item>-->
+            <el-menu-item index="5" class="title" @click="$router.push('/commentary')">
+              <i class="el-icon-s-comment"></i>
+              <span slot="title">评价管理</span>
+            </el-menu-item>
+           <el-menu-item index="6" class="title" @click="$router.push('/chat')">
+             <i class="el-icon-chat-line-round"></i>
+              <span slot="title">互动管理</span>
+            </el-menu-item>
             <el-menu-item index="6" class="title" @click="$router.push('/monitor')">
               <i class="el-icon-monitor"></i>
               <span slot="title">访问监控</span>
@@ -35,7 +39,7 @@
     </el-aside>
 
     <el-container>
-<!--      header -->
+<!--      header
       <el-header style="text-align: right; font-size: 12px">
         <el-dropdown>
 <!--          <i class="el-icon-setting" style="margin-right: 15px"></i>-->
