@@ -3,7 +3,7 @@
     <el-upload
       ref="upload"
       class="avatar-uploader"
-      action="http://localhost:8080/ejile/img/upload"
+      :action=this.uploadUrl
       name="picture"
       list-type="picture-card"
       :limit="1"
@@ -31,6 +31,7 @@ export default {
   data() {
     return {
       // 文件上传的参数
+      uploadUrl: process.env.BASE_URL + 'img/upload',
       dialogImageUrl: '',
       dialogVisible: false,
       // 图片列表（用于在上传组件中回显图片）
